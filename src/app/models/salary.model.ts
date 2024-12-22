@@ -17,3 +17,9 @@ export interface Salary {
   total_xp: number | null;
   remote: RemoteInfo | null;
 }
+
+export interface Ranges {
+  name: string;
+  count: number;
+  percentage: number;
+}

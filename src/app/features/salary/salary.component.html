@@ -69,9 +69,6 @@
     </table>
   </div>
 
-  <div *ngIf="loading">Chargement...</div>
-  <div *ngIf="!loading && errorMessage">{{ errorMessage }}</div>
-
   <!-- Tableau des salaires -->
   <div
     *ngIf="!loading && salaries.length > 0"

@@ -1,0 +1,42 @@
+<div class="flex h-100%">
+  <!-- Sidebar -->
+  <div class="w-64 bg-blue text-white flex flex-col">
+    <div
+      class="h-16 flex items-center justify-center bg-pink text-lg font-semibold"
+    >
+      Menu
+    </div>
+    <nav class="flex-1">
+      <ul class="space-y-2 p-4">
+        <!-- Dashboard -->
+        <li>
+          <a
+            href="/graphs"
+            class="flex items-center p-2 hover:bg-orange rounded-md transition duration-200"
+          >
+            <span class="material-icons mr-2">dashboard</span>
+            Dashboard
+          </a>
+        </li>
+        <!-- Salaires -->
+        <li>
+          <a
+            href="/salary"
+            class="flex items-center p-2 hover:bg-orange rounded-md transition duration-200"
+          >
+            <span class="material-icons mr-2">paid</span>
+            Salaires
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Contenu principal -->
+  <!-- Contenu principal -->
+  <div class="flex-1 flex flex-col">
+    <main class="flex-1 p-4 bg-gray-light">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

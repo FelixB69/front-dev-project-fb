@@ -1,11 +1,13 @@
 import { Routes } from '@angular/router';
-import { SalaireComponent } from './features/salaire/salaire.component';
+import { SalaryComponent } from './features/salary/salary.component';
+import { GraphsComponent } from './features/graphs/graphs.component';
+import { LayoutComponent } from './layout/layout.component';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'salaire',
-    pathMatch: 'full',
+    component: SalaryComponent,
   },
-  { path: 'salaire', component: SalaireComponent },
+  { path: 'salary', component: SalaryComponent },
+  { path: 'graphs', component: GraphsComponent },
 ];

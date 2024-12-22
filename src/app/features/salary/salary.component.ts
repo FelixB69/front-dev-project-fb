@@ -9,11 +9,11 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-salaire',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './salaire.component.html',
-  styleUrl: './salaire.component.css',
+  templateUrl: './salary.component.html',
+  styleUrl: './salary.component.css',
   providers: [],
 })
-export class SalaireComponent implements OnInit {
+export class SalaryComponent implements OnInit {
   salaries: Salary[] = [];
   loading: boolean = true;
   errorMessage: string = '';
