@@ -1,0 +1,228 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Titre -->
+  <h1 class="text-3xl font-bold text-blue mb-8 font-sans">
+    Liste des salaires
+  </h1>
+
+  <!-- Indicateur de chargement -->
+  <div *ngIf="loading" class="flex items-center justify-center p-8">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue"></div>
+    <span class="ml-4 text-gray-dark font-sans"
+      >Chargement des salaires...</span
+    >
+  </div>
+
+  <!-- Message d'erreur -->
+  <div
+    *ngIf="!loading && errorMessage"
+    class="bg-pink/20 border-l-4 border-pink p-4 rounded-lg mb-6"
+  >
+    <div class="flex items-center">
+      <p class="text-gray-dark font-sans">
+        {{ errorMessage }}
+      </p>
+    </div>
+  </div>
+
+  <div class="flex gap-8">
+    <div class="w-1/4 mb-8">
+      <!-- Filtrer par ville -->
+      <label for="city" class="block mb-3 text-md font-semibold text-gray-dark">
+        Filtrer par ville
+      </label>
+      <select
+        id="city"
+        [(ngModel)]="selectedCity"
+        (change)="filterByCity(selectedCity)"
+        class="w-full px-4 py-3 text-gray-dark bg-white border-2 border-gray/20 rounded-3xl"
+      >
+        <option value="" disabled selected>Sélectionnez une ville</option>
+        <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+      </select>
+    </div>
+
+    <div class="w-1/4 mb-8">
+      <!-- Filtrer par tranche de salaire -->
+      <label
+        for="salary-range"
+        class="block mb-3 text-md font-semibold text-gray-dark"
+      >
+        Filtrer par tranche de salaire
+      </label>
+      <select
+        id="salary-range"
+        [(ngModel)]="selectedRangeName"
+        (change)="filterByRange(selectedRangeName)"
+        class="w-full px-4 py-3 text-gray-dark bg-white border-2 border-gray/20 rounded-3xl"
+      >
+        <option value="" disabled selected>Sélectionnez une tranche</option>
+        <option *ngFor="let range of ranges" [value]="range.name">
+          {{ range.label }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <!-- Tableau des salaires -->
+  <div *ngIf="!loading && salaries.length > 0">
+    <table>
+      <!-- Tableau déjà existant -->
+    </table>
+  </div>
+
+  <div *ngIf="loading">Chargement...</div>
+  <div *ngIf="!loading && errorMessage">{{ errorMessage }}</div>
+
+  <!-- Tableau des salaires -->
+  <div
+    *ngIf="!loading && salaries.length > 0"
+    class="overflow-x-auto rounded-3xl shadow-lg bg-white"
+  >
+    <table class="divide-y divide-gray w-full">
+      <thead class="bg-blue">
+        <tr class="font-bold">
+          <th
+            scope="col"
+            class="w-1/6 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            (click)="sortData('company')"
+          >
+            Entreprise
+            <span *ngIf="sortKey === 'company'">
+              {{ sortOrder === "asc" ? "⬆️" : "⬇️" }}
+            </span>
+          </th>
+          <th
+            scope="col"
+            class="w-1/6 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            (click)="sortData('title')"
+          >
+            Poste
+            <span *ngIf="sortKey === 'title'">
+              {{ sortOrder === "asc" ? "⬆️" : "⬇️" }}
+            </span>
+          </th>
+          <th
+            scope="col"
+            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            (click)="sortData('location')"
+          >
+            Localisation
+            <span *ngIf="sortKey === 'location'">
+              {{ sortOrder === "asc" ? "⬆️" : "⬇️" }}
+            </span>
+          </th>
+          <th
+            scope="col"
+            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            (click)="sortData('compensation')"
+          >
+            Salaire (€)
+            <span *ngIf="sortKey === 'compensation'">
+              {{ sortOrder === "asc" ? "⬆️" : "⬇️" }}
+            </span>
+          </th>
+          <th
+            scope="col"
+            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            (click)="sortData('date')"
+          >
+            Date
+            <span *ngIf="sortKey === 'date'">
+              {{ sortOrder === "asc" ? "⬆️" : "⬇️" }}
+            </span>
+          </th>
+          <th
+            scope="col"
+            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider"
+          >
+            Niveau
+          </th>
+          <th
+            scope="col"
+            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            (click)="sortData('company_xp')"
+          >
+            Exp. entreprise
+            <span *ngIf="sortKey === 'company_xp'">
+              {{ sortOrder === "asc" ? "⬆️" : "⬇️" }}
+            </span>
+          </th>
+          <th
+            scope="col"
+            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            (click)="sortData('total_xp')"
+          >
+            Exp. totale
+            <span *ngIf="sortKey === 'total_xp'">
+              {{ sortOrder === "asc" ? "⬆️" : "⬇️" }}
+            </span>
+          </th>
+          <th
+            scope="col"
+            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider"
+          >
+            Télétravail
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-gray-light divide-y divide-gray">
+        <tr
+          *ngFor="let item of salaries"
+          class="hover:bg-white transition-colors duration-200"
+        >
+          <td class="px-4 py-4 text-sm text-gray-dark font-sans">
+            {{ item.company }}
+          </td>
+          <td class="px-4 py-4 text-sm text-gray-dark font-sans">
+            {{ item.title }}
+          </td>
+          <td class="px-4 py-4 text-sm text-gray-dark font-sans">
+            {{ item.location }}
+          </td>
+          <td class="px-4 py-4 text-sm text-blue font-medium font-sans">
+            {{ item.compensation }}€
+          </td>
+          <td class="px-4 py-4 text-sm text-gray font-sans">
+            {{ item.date | date : "dd/MM/YYYY" }}
+          </td>
+          <td class="px-4 py-4 text-sm text-gray font-sans">
+            {{ item.level }}
+          </td>
+          <td class="px-4 py-4 text-sm text-gray font-sans">
+            {{ item.company_xp || "N/A" }}
+          </td>
+          <td class="px-4 py-4 text-sm text-gray font-sans">
+            {{ item.total_xp || "N/A" }}
+          </td>
+          <td class="px-4 py-4 text-sm font-sans">
+            <span
+              *ngIf="item.remote; else noRemote"
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green/20 text-green"
+            >
+              {{ item.remote.variant }} ({{
+                item.remote.dayCount || 0
+              }}
+              jours/{{ item.remote.base }})
+            </span>
+            <ng-template #noRemote>
+              <span
+                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray/20 text-gray"
+              >
+                Pas de télétravail
+              </span>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Message si aucun salaire disponible -->
+  <div
+    *ngIf="!loading && !errorMessage && salaries.length === 0"
+    class="bg-orange/20 border-l-4 border-orange p-4 rounded-lg mt-6"
+  >
+    <div class="flex items-center">
+      <p class="text-gray-dark font-sans">Aucun salaire disponible.</p>
+    </div>
+  </div>
+</div>
