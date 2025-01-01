@@ -23,3 +23,9 @@ export interface Ranges {
   count: number;
   percentage: number;
 }
+
+export interface Datas {
+  totalSalaries: number;
+  averageCompensation: number;
+  medianCompensation: number;
+}

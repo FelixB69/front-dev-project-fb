@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Chart, registerables } from 'chart.js';
 import { SalaryService } from '../../services/salary/salary.service';
+import { StatsCardComponent } from '../../shared/stats-card/stats-card.component';
+import { Datas } from '../../models/salary.model';
 
 @Component({
-  selector: 'app-graphs',
+  selector: 'app-dashboard',
   standalone: true,
-  imports: [],
-  templateUrl: './graphs.component.html',
-  styleUrl: './graphs.component.css',
+  imports: [CommonModule, StatsCardComponent],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css'],
 })
-export class GraphsComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   public chart: any;
+  stats: { title: string; value: string | number; valueColor: string }[] = [];
 
   constructor(private salaryService: SalaryService) {
     Chart.register(...registerables);
@@ -18,19 +22,39 @@ export class GraphsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadSalaryRanges();
+    this.loadSalaryData();
   }
 
-  // Method to load ranges from API Service
   loadSalaryRanges(): void {
     this.salaryService.getSalariesRanges().subscribe((ranges) => {
       this.createChart(ranges);
     });
   }
 
-  // Method to create chart
+  loadSalaryData(): void {
+    this.salaryService.getSalariesDatas().subscribe((data: Datas) => {
+      this.stats = [
+        {
+          title: 'Total des Salaires',
+          value: data.totalSalaries,
+          valueColor: 'text-pink',
+        },
+        {
+          title: 'Salaire Moyen',
+          value: `${data.averageCompensation.toFixed(2)} €`,
+          valueColor: 'text-green',
+        },
+        {
+          title: 'Salaire Médian',
+          value: `${data.medianCompensation} €`,
+          valueColor: 'text-orange',
+        },
+      ];
+    });
+  }
+
   createChart(ranges: any[]): void {
     const labels = ranges.map((range) => this.formatRangeName(range.name));
-
     const data = ranges.map((range) => range.percentage);
 
     this.chart = new Chart('salaryChart', {

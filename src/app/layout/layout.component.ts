@@ -53,7 +53,7 @@ export class LayoutComponent {
 
   updateTitleBasedOnRoute(url: string) {
     // Mettre à jour le titre en fonction de l'URL (ajustez selon vos routes)
-    if (url.includes('graphs')) {
+    if (url.includes('dashboard')) {
       this.currentTitle = 'Dashboard';
     } else if (url.includes('salary')) {
       this.currentTitle = 'Salaires';

@@ -1,0 +1,18 @@
+<div
+  class="container flex flex-col items-center justify-center bg-gray-light px-8 py-4"
+>
+  <!-- Cards Section -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-28 w-full max-w-5xl mb-14">
+    <app-stats-card
+      *ngFor="let stat of stats"
+      [title]="stat.title"
+      [value]="stat.value"
+      [valueColor]="stat.valueColor"
+    ></app-stats-card>
+  </div>
+
+  <!-- Chart Section -->
+  <div class="w-full max-w-xl bg-white p-6 rounded-3xl shadow-lg">
+    <canvas id="salaryChart"></canvas>
+  </div>
+</div>
