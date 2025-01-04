@@ -8,6 +8,7 @@ import {
   animate,
   transition,
 } from '@angular/animations';
+import { SalaryService } from '../services/salary/salary.service';
 
 @Component({
   selector: 'app-layout',
@@ -37,8 +38,9 @@ import {
 export class LayoutComponent {
   menuState: string = 'in'; // État de la sidebar
   currentTitle: string = 'Dashboard'; // Titre par défaut
+  isRefreshing: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private salaryService: SalaryService) {
     // Écouter les changements de route pour mettre à jour le titre
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -58,12 +60,42 @@ export class LayoutComponent {
     } else if (url.includes('salary')) {
       this.currentTitle = 'Salaires';
     } else {
-      this.currentTitle = 'Accueil'; // Par défaut ou autre titre
+      this.currentTitle = 'Dashboard'; // Par défaut ou autre titre
     }
   }
 
   setTitle(title: string) {
     // Méthode manuelle pour définir le titre si nécessaire
     this.currentTitle = title;
+  }
+
+  refreshData(): void {
+    if (this.isRefreshing) {
+      return; // Évite les multiples clics
+    }
+
+    this.isRefreshing = true;
+    this.salaryService.fetchData().subscribe({
+      next: () => {
+        console.log('API appelée avec succès');
+        const currentUrl = this.router.url; // Stocker l'URL actuelle
+
+        // Naviguer temporairement puis revenir à l'URL actuelle
+        this.router
+          .navigateByUrl('/', { skipLocationChange: true })
+          .then(() => {
+            this.router
+              .navigateByUrl(currentUrl, { skipLocationChange: true })
+              .then(() => {
+                console.log('Composant rechargé :', currentUrl);
+              });
+          });
+        this.isRefreshing = false; // Fin du processus
+      },
+      error: (err) => {
+        console.error("Erreur lors de l'appel de l'API :", err);
+        this.isRefreshing = false; // En cas d'erreur, libérer l'indicateur
+      },
+    });
   }
 }

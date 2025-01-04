@@ -10,6 +10,17 @@ export class SalaryService {
   private baseUrl = 'http://localhost:3000/salaries';
   constructor(private http: HttpClient) {}
 
+  fetchData(): Observable<any> {
+    return this.http.get<Datas>(`${this.baseUrl}/fetch`).pipe(
+      catchError((error) => {
+        console.error('HTTP Error:', error);
+        return throwError(
+          () => new Error('Erreur lors de la récupération des données.')
+        );
+      })
+    );
+  }
+
   getSalaries(): Observable<Salary[]> {
     return this.http
       .get<any[]>(this.baseUrl)
