@@ -48,7 +48,8 @@ export class SalaryService {
 
   getSalariesWithFilters(
     city?: string,
-    rangeName?: string
+    rangeName?: string,
+    year?: string
   ): Observable<Salary[]> {
     let url = `${this.baseUrl}/filter`;
 
@@ -60,6 +61,10 @@ export class SalaryService {
 
     if (rangeName) {
       params['rangeName'] = rangeName; // Notation avec crochets
+    }
+
+    if (year) {
+      params['year'] = year; // Notation avec crochets
     }
 
     return this.http.get<Salary[]>(url, { params }).pipe(

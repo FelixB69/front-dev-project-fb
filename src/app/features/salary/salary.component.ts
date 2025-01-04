@@ -20,6 +20,7 @@ export class SalaryComponent implements OnInit {
   salaryData = SALARY_DATA;
   selectedCity: string = '';
   selectedRangeName: string = '';
+  selectedYear: string = '';
   cities: string[] = [];
   ranges: { name: string; label: string }[] = [
     { name: 'under30k', label: '< 30k€' },
@@ -28,6 +29,14 @@ export class SalaryComponent implements OnInit {
     { name: 'between50kAnd70k', label: '50k€ - 70k€' },
     { name: 'between70kAnd100k', label: '70k€ - 100k€' },
     { name: 'over100k', label: '> 100k€' },
+  ];
+  year: { name: string; label: string }[] = [
+    { name: 'between0yearAnd2year', label: 'Moins de 2 ans' },
+    { name: 'between2yearAnd5year', label: 'Entre 2 et 5 ans' },
+    { name: 'between5yearAnd8year', label: 'Entre 5 et 8 ans' },
+    { name: 'between8yearAnd10year', label: 'Entre 8 et 10 ans' },
+    { name: 'between10yearAnd15year', label: 'Entre 10 et 15 ans' },
+    { name: 'over15year', label: 'Plus de 15 ans' },
   ];
   sortKey: string = '';
   sortOrder: 'asc' | 'desc' = 'asc';
@@ -44,7 +53,11 @@ export class SalaryComponent implements OnInit {
     this.errorMessage = '';
 
     this.salaryService
-      .getSalariesWithFilters(this.selectedCity, this.selectedRangeName)
+      .getSalariesWithFilters(
+        this.selectedCity,
+        this.selectedRangeName,
+        this.selectedYear
+      )
       .subscribe({
         next: (data) => {
           this.salaries = data;
@@ -74,6 +87,11 @@ export class SalaryComponent implements OnInit {
 
   filterByRange(rangeName: string): void {
     this.selectedRangeName = rangeName;
+    this.fetchSalaries();
+  }
+
+  filterByYear(year: string): void {
+    this.selectedYear = year;
     this.fetchSalaries();
   }
 
