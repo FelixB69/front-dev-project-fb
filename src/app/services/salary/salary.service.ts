@@ -16,6 +16,12 @@ export class SalaryService {
       .pipe(catchError(this.handleError));
   }
 
+  getCities(): Observable<string[]> {
+    return this.http
+      .get<string[]>(`${this.baseUrl}/cities`)
+      .pipe(catchError(this.handleError));
+  }
+
   getSalariesByCity(city: string): Observable<Salary[]> {
     const url = `http://localhost:3000/salaries/city/${city}`;
     console.log('Calling API:', url);

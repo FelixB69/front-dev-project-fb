@@ -20,7 +20,7 @@ export class SalaryComponent implements OnInit {
   salaryData = SALARY_DATA;
   selectedCity: string = '';
   selectedRangeName: string = '';
-  cities: string[] = ['Paris', 'Lyon', 'Marseille'];
+  cities: string[] = [];
   ranges: { name: string; label: string }[] = [
     { name: 'under30k', label: '< 30k€' },
     { name: 'between30kAnd40k', label: '30k€ - 40k€' },
@@ -36,6 +36,7 @@ export class SalaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchSalaries();
+    this.fetchCities();
   }
 
   fetchSalaries(): void {
@@ -58,6 +59,12 @@ export class SalaryComponent implements OnInit {
           console.log('Récupération des salaires terminée.');
         },
       });
+  }
+
+  fetchCities() {
+    this.salaryService.getCities().subscribe((cities) => {
+      this.cities = cities;
+    });
   }
 
   filterByCity(city: string): void {
