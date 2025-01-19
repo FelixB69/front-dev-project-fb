@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { SALARY_DATA } from '../../core/constants/salary-data.constant';
 import { CommonModule } from '@angular/common';
 import { Salary } from '../../models/salary.model';
 import { SalaryService } from '../../services/salary/salary.service';
 import { FormsModule } from '@angular/forms';
+import { RANGES, YEARS } from '../../core/constants/salaryConstants';
 
 @Component({
   selector: 'app-salaire',
@@ -17,27 +17,13 @@ export class SalaryComponent implements OnInit {
   salaries: Salary[] = [];
   loading: boolean = true;
   errorMessage: string = '';
-  salaryData = SALARY_DATA;
+
   selectedCity: string = '';
   selectedRangeName: string = '';
   selectedYear: string = '';
   cities: string[] = [];
-  ranges: { name: string; label: string }[] = [
-    { name: 'under30k', label: '< 30k€' },
-    { name: 'between30kAnd40k', label: '30k€ - 40k€' },
-    { name: 'between40kAnd50k', label: '40k€ - 50k€' },
-    { name: 'between50kAnd70k', label: '50k€ - 70k€' },
-    { name: 'between70kAnd100k', label: '70k€ - 100k€' },
-    { name: 'over100k', label: '> 100k€' },
-  ];
-  year: { name: string; label: string }[] = [
-    { name: 'between0yearAnd2year', label: 'Moins de 2 ans' },
-    { name: 'between2yearAnd5year', label: 'Entre 2 et 5 ans' },
-    { name: 'between5yearAnd8year', label: 'Entre 5 et 8 ans' },
-    { name: 'between8yearAnd10year', label: 'Entre 8 et 10 ans' },
-    { name: 'between10yearAnd15year', label: 'Entre 10 et 15 ans' },
-    { name: 'over15year', label: 'Plus de 15 ans' },
-  ];
+  ranges: { name: string; label: string }[] = RANGES;
+  year: { name: string; label: string }[] = YEARS;
   sortKey: string = '';
   sortOrder: 'asc' | 'desc' = 'asc';
 

@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Ranges, Salary, Datas } from '../../models/salary.model';
+import { Salary, Datas, Stats } from '../../models/salary.model';
 import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable({
@@ -80,9 +80,15 @@ export class SalaryService {
     );
   }
 
-  getSalariesRanges(): Observable<Ranges[]> {
+  getSalariesRanges(): Observable<Stats[]> {
     return this.http
       .get<any[]>(`${this.baseUrl}/ranges`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getSalariesYears(): Observable<Stats[]> {
+    return this.http
+      .get<any[]>(`${this.baseUrl}/years`)
       .pipe(catchError(this.handleError));
   }
 

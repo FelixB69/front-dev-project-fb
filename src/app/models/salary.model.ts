@@ -18,10 +18,12 @@ export interface Salary {
   remote: RemoteInfo | null;
 }
 
-export interface Ranges {
+export interface Stats {
   name: string;
   count: number;
   percentage: number;
+  average: number;
+  median: number;
 }
 
 export interface Datas {

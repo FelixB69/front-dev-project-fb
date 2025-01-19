@@ -1,5 +1,5 @@
 <div
-  class="container flex flex-col items-center justify-center bg-gray-light px-8 py-4"
+  class="container flex flex-col items-center mx-auto justify-center bg-gray-light px-8 py-4"
 >
   <!-- Cards Section -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-28 w-full max-w-5xl mb-14">
@@ -12,7 +12,12 @@
   </div>
 
   <!-- Chart Section -->
-  <div class="w-full max-w-xl bg-white p-6 rounded-3xl shadow-lg">
-    <canvas id="salaryChart"></canvas>
+  <div class="flex w-full max-w-5xl justify-center gap-8">
+    <div class="w-full bg-white p-6 rounded-3xl shadow-lg">
+      <canvas id="rangeChart"></canvas>
+    </div>
+    <div class="w-full bg-white p-6 rounded-3xl shadow-lg">
+      <canvas id="yearChart"></canvas>
+    </div>
   </div>
 </div>

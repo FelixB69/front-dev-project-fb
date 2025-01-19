@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Chart, registerables } from 'chart.js';
 import { SalaryService } from '../../services/salary/salary.service';
 import { StatsCardComponent } from '../../shared/stats-card/stats-card.component';
-import { Datas } from '../../models/salary.model';
+import { Datas, Stats } from '../../models/salary.model';
+import { RANGES, YEARS } from '../../core/constants/salaryConstants';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,11 +24,18 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.loadSalaryRanges();
     this.loadSalaryData();
+    this.loadSalaryYears();
   }
 
   loadSalaryRanges(): void {
     this.salaryService.getSalariesRanges().subscribe((ranges) => {
-      this.createChart(ranges);
+      this.createChart(ranges, 'rangeChart', RANGES);
+    });
+  }
+
+  loadSalaryYears(): void {
+    this.salaryService.getSalariesYears().subscribe((years) => {
+      this.createChart(years, 'yearChart', YEARS);
     });
   }
 
@@ -53,11 +61,11 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  createChart(ranges: any[]): void {
-    const labels = ranges.map((range) => this.formatRangeName(range.name));
-    const data = ranges.map((range) => range.percentage);
+  createChart(datas: Stats[], chartName: string, constant: any): void {
+    const labels = constant.map((data: any) => data.label);
+    const data = datas.map((data) => data.percentage);
 
-    this.chart = new Chart('salaryChart', {
+    this.chart = new Chart(chartName, {
       type: 'pie',
       data: {
         labels: labels,
