@@ -15,3 +15,17 @@ export const RANGES = [
   { name: 'between70kAnd100k', label: '70k€ - 100k€' },
   { name: 'over100k', label: '> 100k€' },
 ];
+
+export const CITIES = [
+  { name: 'Lyon', label: 'Lyon' },
+  { name: 'Paris', label: 'Paris' },
+  { name: 'Marseille', label: 'Marseille' },
+  { name: 'Bordeaux', label: 'Bordeaux' },
+  { name: 'Remote', label: 'Remote' },
+  { name: 'Nantes', label: 'Nantes' },
+  { name: 'Toulouse', label: 'Toulouse' },
+  { name: 'Lille', label: 'Lille' },
+  { name: 'Suisse', label: 'Suisse' },
+  { name: 'Montpellier', label: 'Montpellier' },
+  { name: 'Autre', label: 'Autre' },
+];

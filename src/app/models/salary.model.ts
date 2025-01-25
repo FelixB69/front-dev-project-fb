@@ -18,6 +18,11 @@ export interface Salary {
   remote: RemoteInfo | null;
 }
 
+export interface Score {
+  id: string;
+  score: number;
+}
+
 export interface Stats {
   name: string;
   count: number;
@@ -30,4 +35,6 @@ export interface Datas {
   totalSalaries: number;
   averageCompensation: number;
   medianCompensation: number;
+  lowestSalary: number;
+  highestSalary: number;
 }

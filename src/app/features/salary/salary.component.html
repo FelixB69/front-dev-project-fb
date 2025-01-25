@@ -96,7 +96,7 @@
         <tr class="font-bold">
           <th
             scope="col"
-            class="w-1/6 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('company')"
           >
             Entreprise
@@ -106,7 +106,7 @@
           </th>
           <th
             scope="col"
-            class="w-1/6 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('title')"
           >
             Poste
@@ -116,7 +116,7 @@
           </th>
           <th
             scope="col"
-            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('location')"
           >
             Localisation
@@ -126,7 +126,7 @@
           </th>
           <th
             scope="col"
-            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('compensation')"
           >
             Salaire (€)
@@ -136,7 +136,7 @@
           </th>
           <th
             scope="col"
-            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('date')"
           >
             Date
@@ -146,13 +146,13 @@
           </th>
           <th
             scope="col"
-            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider"
+            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider"
           >
             Niveau
           </th>
           <th
             scope="col"
-            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('company_xp')"
           >
             Exp. entreprise
@@ -162,7 +162,7 @@
           </th>
           <th
             scope="col"
-            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('total_xp')"
           >
             Exp. totale
@@ -172,9 +172,15 @@
           </th>
           <th
             scope="col"
-            class="w-1/8 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider"
+            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider"
           >
             Télétravail
+          </th>
+          <th
+            scope="col"
+            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider"
+          >
+            Score
           </th>
         </tr>
       </thead>
@@ -224,6 +230,9 @@
                 Pas de télétravail
               </span>
             </ng-template>
+          </td>
+          <td class="px-4 py-4 text-sm text-gray font-sans">
+            {{ getScoreById(item.id) }}
           </td>
         </tr>
       </tbody>

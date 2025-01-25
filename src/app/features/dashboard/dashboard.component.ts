@@ -4,7 +4,7 @@ import { Chart, registerables } from 'chart.js';
 import { SalaryService } from '../../services/salary/salary.service';
 import { StatsCardComponent } from '../../shared/stats-card/stats-card.component';
 import { Datas, Stats } from '../../models/salary.model';
-import { RANGES, YEARS } from '../../core/constants/salaryConstants';
+import { CITIES, RANGES, YEARS } from '../../core/constants/salaryConstants';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,6 +25,7 @@ export class DashboardComponent implements OnInit {
     this.loadSalaryRanges();
     this.loadSalaryData();
     this.loadSalaryYears();
+    this.loadSalaryCity();
   }
 
   loadSalaryRanges(): void {
@@ -39,6 +40,12 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  loadSalaryCity(): void {
+    this.salaryService.getSalariesCity().subscribe((city) => {
+      this.createChart(city, 'cityChart', CITIES);
+    });
+  }
+
   loadSalaryData(): void {
     this.salaryService.getSalariesDatas().subscribe((data: Datas) => {
       this.stats = [
@@ -49,13 +56,23 @@ export class DashboardComponent implements OnInit {
         },
         {
           title: 'Salaire Moyen',
-          value: `${data.averageCompensation.toFixed(2)} €`,
+          value: `${data.averageCompensation} €`,
           valueColor: 'text-green',
         },
         {
           title: 'Salaire Médian',
           value: `${data.medianCompensation} €`,
           valueColor: 'text-orange',
+        },
+        {
+          title: 'Salaire Min',
+          value: `${data.lowestSalary} €`,
+          valueColor: 'text-blue',
+        },
+        {
+          title: 'Salaire Max',
+          value: `${data.highestSalary} €`,
+          valueColor: 'text-grey',
         },
       ];
     });
@@ -64,9 +81,11 @@ export class DashboardComponent implements OnInit {
   createChart(datas: Stats[], chartName: string, constant: any): void {
     const labels = constant.map((data: any) => data.label);
     const data = datas.map((data) => data.percentage);
+    const averages = datas.map((data) => data.average);
+    const count = datas.map((data) => data.count);
 
     this.chart = new Chart(chartName, {
-      type: 'pie',
+      type: 'doughnut',
       data: {
         labels: labels,
         datasets: [
@@ -87,12 +106,24 @@ export class DashboardComponent implements OnInit {
         responsive: true,
         plugins: {
           legend: {
-            position: 'top',
+            position: 'bottom',
+            labels: {
+              padding: 15,
+              useBorderRadius: true,
+              borderRadius: 5,
+            },
           },
           tooltip: {
             callbacks: {
+              title: function (tooltipItem) {
+                return constant[tooltipItem[0].dataIndex].label;
+              },
               label: function (tooltipItem) {
-                return `${tooltipItem.label}: ${tooltipItem.raw}%`;
+                const dataset = tooltipItem.dataset;
+                const value = dataset.data[tooltipItem.dataIndex];
+                const average = averages[tooltipItem.dataIndex];
+                const counts = count[tooltipItem.dataIndex];
+                return ` ${counts} - ${value}% (Moyenne: ${average}€)`;
               },
             },
           },

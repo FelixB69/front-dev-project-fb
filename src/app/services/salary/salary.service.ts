@@ -92,9 +92,21 @@ export class SalaryService {
       .pipe(catchError(this.handleError));
   }
 
+  getSalariesCity(): Observable<Stats[]> {
+    return this.http
+      .get<any[]>(`${this.baseUrl}/city`)
+      .pipe(catchError(this.handleError));
+  }
+
   getSalariesDatas(): Observable<Datas> {
     return this.http
       .get<any>(`${this.baseUrl}/datas`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getScore(): Observable<any> {
+    return this.http
+      .get<any>(`${this.baseUrl}/score`)
       .pipe(catchError(this.handleError));
   }
 

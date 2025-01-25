@@ -2,7 +2,7 @@
   class="container flex flex-col items-center mx-auto justify-center bg-gray-light px-8 py-4"
 >
   <!-- Cards Section -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-28 w-full max-w-5xl mb-14">
+  <div class="grid grid-cols-1 md:grid-cols-5 gap-20 w-full mb-14">
     <app-stats-card
       *ngFor="let stat of stats"
       [title]="stat.title"
@@ -12,12 +12,24 @@
   </div>
 
   <!-- Chart Section -->
-  <div class="flex w-full max-w-5xl justify-center gap-8">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-12 w-full">
     <div class="w-full bg-white p-6 rounded-3xl shadow-lg">
+      <div class="text-center mt-2 mb-6 text-xl font-semibold text-gray-dark">
+        Répartition par tranches
+      </div>
       <canvas id="rangeChart"></canvas>
     </div>
     <div class="w-full bg-white p-6 rounded-3xl shadow-lg">
+      <div class="text-center mt-2 mb-6 text-xl font-semibold text-gray-dark">
+        Répartition par années d'expérience
+      </div>
       <canvas id="yearChart"></canvas>
+    </div>
+    <div class="w-full bg-white p-6 rounded-3xl shadow-lg">
+      <div class="text-center mt-2 mb-6 text-xl font-semibold text-gray-dark">
+        Répartition par villes
+      </div>
+      <canvas id="cityChart"></canvas>
     </div>
   </div>
 </div>
