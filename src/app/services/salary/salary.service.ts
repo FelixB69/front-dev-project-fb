@@ -105,9 +105,7 @@ export class SalaryService {
   }
 
   getScore(): Observable<any> {
-    return this.http
-      .get<any>(`${this.baseUrl}/score`)
-      .pipe(catchError(this.handleError));
+    return this.http.get<any>(`${this.baseUrl}/score`);
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

@@ -1,4 +1,95 @@
 <div class="container mx-auto px-4 py-8">
+  <div class="flex gap-8">
+    <div class="w-1/3 mb-8">
+      <!-- Filtrer par ville -->
+      <label for="city" class="block mb-3 text-md font-semibold text-gray-dark">
+        Filtrer par localisation
+      </label>
+      <div class="relative">
+        <select
+          id="city"
+          [(ngModel)]="selectedCity"
+          (change)="filterByCity(selectedCity)"
+          [ngClass]="{ 'px-8': selectedCity, 'px-4': !selectedCity }"
+          class="w-full py-3 text-gray-dark bg-white border-2 border-gray/20 rounded-3xl"
+        >
+          <option value="" disabled selected>
+            Sélectionnez une localisation
+          </option>
+          <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+        </select>
+        <button
+          *ngIf="selectedCity"
+          (click)="clearCityFilter()"
+          class="text-xs absolute top-4 left-4 bg-pink text-white w-4 h-4 rounded-full flex items-center justify-center"
+        >
+          &#x2716;
+        </button>
+      </div>
+    </div>
+
+    <div class="w-1/3 mb-8">
+      <!-- Filtrer par tranche de salaire -->
+      <label
+        for="salary-range"
+        class="block mb-3 text-md font-semibold text-gray-dark"
+      >
+        Filtrer par tranche de salaire
+      </label>
+      <div class="relative">
+        <select
+          id="salary-range"
+          [(ngModel)]="selectedRangeName"
+          (change)="filterByRange(selectedRangeName)"
+          [ngClass]="{ 'px-8': selectedRangeName, 'px-4': !selectedRangeName }"
+          class="w-full px-4 py-3 text-gray-dark bg-white border-2 border-gray/20 rounded-3xl"
+        >
+          <option value="" disabled selected>Sélectionnez une tranche</option>
+          <option *ngFor="let range of ranges" [value]="range.name">
+            {{ range.label }}
+          </option>
+        </select>
+        <button
+          *ngIf="selectedRangeName"
+          (click)="clearRangeFilter()"
+          class="text-xs absolute top-4 left-4 bg-pink text-white w-4 h-4 rounded-full flex items-center justify-center"
+        >
+          &#x2716;
+        </button>
+      </div>
+    </div>
+    <div class="w-1/3 mb-8">
+      <!-- Filtrer par tranche de salaire -->
+      <label
+        for="salary-range"
+        class="block mb-3 text-md font-semibold text-gray-dark"
+      >
+        Filtrer par nombre d'années totales d'expérience
+      </label>
+      <div class="relative">
+        <select
+          id="salary-range"
+          [(ngModel)]="selectedYear"
+          (change)="filterByYear(selectedYear)"
+          [ngClass]="{ 'px-8': selectedYear, 'px-4': !selectedYear }"
+          class="w-full px-4 py-3 text-gray-dark bg-white border-2 border-gray/20 rounded-3xl"
+        >
+          <option value="" disabled selected>Sélectionnez une période</option>
+          <option *ngFor="let year of year" [value]="year.name">
+            {{ year.label }}
+          </option>
+        </select>
+        <button
+          *ngIf="selectedYear"
+          (click)="clearYearFilter()"
+          class="text-xs absolute top-4 left-4 bg-pink text-white w-4 h-4 rounded-full flex items-center justify-center"
+        >
+          &#x2716;
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Indicateur de chargement -->
   <div *ngIf="loading" class="flex items-center justify-center p-8">
     <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue"></div>
@@ -16,67 +107,6 @@
       <p class="text-gray-dark font-sans">
         {{ errorMessage }}
       </p>
-    </div>
-  </div>
-
-  <div class="flex gap-8">
-    <div class="w-1/3 mb-8">
-      <!-- Filtrer par ville -->
-      <label for="city" class="block mb-3 text-md font-semibold text-gray-dark">
-        Filtrer par localisation
-      </label>
-      <select
-        id="city"
-        [(ngModel)]="selectedCity"
-        (change)="filterByCity(selectedCity)"
-        class="w-full px-4 py-3 text-gray-dark bg-white border-2 border-gray/20 rounded-3xl"
-      >
-        <option value="" disabled selected>
-          Sélectionnez une localisation
-        </option>
-        <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
-      </select>
-    </div>
-
-    <div class="w-1/3 mb-8">
-      <!-- Filtrer par tranche de salaire -->
-      <label
-        for="salary-range"
-        class="block mb-3 text-md font-semibold text-gray-dark"
-      >
-        Filtrer par tranche de salaire
-      </label>
-      <select
-        id="salary-range"
-        [(ngModel)]="selectedRangeName"
-        (change)="filterByRange(selectedRangeName)"
-        class="w-full px-4 py-3 text-gray-dark bg-white border-2 border-gray/20 rounded-3xl"
-      >
-        <option value="" disabled selected>Sélectionnez une tranche</option>
-        <option *ngFor="let range of ranges" [value]="range.name">
-          {{ range.label }}
-        </option>
-      </select>
-    </div>
-    <div class="w-1/3 mb-8">
-      <!-- Filtrer par tranche de salaire -->
-      <label
-        for="salary-range"
-        class="block mb-3 text-md font-semibold text-gray-dark"
-      >
-        Filtrer par nombre d'années totales d'expérience
-      </label>
-      <select
-        id="salary-range"
-        [(ngModel)]="selectedYear"
-        (change)="filterByYear(selectedYear)"
-        class="w-full px-4 py-3 text-gray-dark bg-white border-2 border-gray/20 rounded-3xl"
-      >
-        <option value="" disabled selected>Sélectionnez une période</option>
-        <option *ngFor="let year of year" [value]="year.name">
-          {{ year.label }}
-        </option>
-      </select>
     </div>
   </div>
   <!-- Tableau des salaires -->

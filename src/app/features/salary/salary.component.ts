@@ -31,8 +31,8 @@ export class SalaryComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchSalaries();
-    this.fetchCities();
     this.fetchScore();
+    this.fetchCities();
   }
 
   fetchSalaries(): void {
@@ -68,8 +68,20 @@ export class SalaryComponent implements OnInit {
   }
 
   fetchScore() {
-    this.salaryService.getScore().subscribe((score) => {
-      this.score = score;
+    this.loading = true;
+    this.salaryService.getScore().subscribe({
+      next: (data) => {
+        this.score = data;
+        this.loading = false;
+      },
+      error: (error) => {
+        this.errorMessage = 'Erreur lors de la récupération des scores.';
+        this.loading = false;
+        console.error(error);
+      },
+      complete: () => {
+        console.log('Récupération des scores terminée.');
+      },
     });
   }
 
@@ -115,13 +127,22 @@ export class SalaryComponent implements OnInit {
   }
 
   getScoreById(itemId: string): string | number {
-    console.log('SCORE', this.score);
     const scoreEntry = this.score.find((score) => score.id === itemId);
-    console.log(
-      '🚀 ~ SalaryComponent ~ getScoreById ~ scoreEntry:',
-      scoreEntry,
-      itemId
-    );
     return scoreEntry?.score || 'N/A';
+  }
+
+  clearCityFilter(): void {
+    this.selectedCity = '';
+    this.fetchSalaries(); // Relancer la récupération des salaires
+  }
+
+  clearRangeFilter(): void {
+    this.selectedRangeName = '';
+    this.fetchSalaries(); // Relancer la récupération des salaires
+  }
+
+  clearYearFilter(): void {
+    this.selectedYear = '';
+    this.fetchSalaries(); // Relancer la récupération des salaires
   }
 }
