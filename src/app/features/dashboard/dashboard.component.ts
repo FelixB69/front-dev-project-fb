@@ -31,6 +31,7 @@ export class DashboardComponent implements OnInit {
   loadSalaryRanges(): void {
     this.salaryService.getSalariesRanges().subscribe((ranges) => {
       this.createChart(ranges, 'rangeChart', RANGES);
+      this.createLineChart(ranges, 'rangeLineChart');
     });
   }
 
@@ -72,7 +73,7 @@ export class DashboardComponent implements OnInit {
         {
           title: 'Salaire Max',
           value: `${data.highestSalary} €`,
-          valueColor: 'text-grey',
+          valueColor: 'text-gray',
         },
       ];
     });
@@ -126,6 +127,67 @@ export class DashboardComponent implements OnInit {
                 return ` ${counts} - ${value}% (Moyenne: ${average}€)`;
               },
             },
+          },
+        },
+      },
+    });
+  }
+
+  createLineChart(data: any[], chartName: string): void {
+    const labels = data.map((item) => this.formatRangeName(item.name)); // Formattez les noms pour être plus lisibles
+    const averageSalaries = data.map((item) => item.average); // Salaire moyen
+    const medianSalaries = data.map((item) => item.median); // Salaire médian
+
+    new Chart(chartName, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Salaire Moyen (€)',
+            data: averageSalaries,
+            borderColor: '#06D6A0',
+            backgroundColor: 'rgba(6, 214, 160, 0.2)',
+            tension: 0.4, // Ajoute un effet courbe
+            fill: true,
+          },
+          {
+            label: 'Salaire Médian (€)',
+            data: medianSalaries,
+            borderColor: '#FFD166',
+            backgroundColor: 'rgba(255, 209, 102, 0.2)',
+            tension: 0.4,
+            fill: true,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          tooltip: {
+            callbacks: {
+              label: function (tooltipItem) {
+                return `${tooltipItem.dataset.label}: ${tooltipItem.raw} €`;
+              },
+            },
+          },
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Tranches de salaire',
+            },
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Montant (€)',
+            },
+            beginAtZero: true,
           },
         },
       },
