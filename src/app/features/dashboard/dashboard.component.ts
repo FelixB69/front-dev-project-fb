@@ -38,12 +38,14 @@ export class DashboardComponent implements OnInit {
   loadSalaryYears(): void {
     this.salaryService.getSalariesYears().subscribe((years) => {
       this.createChart(years, 'yearChart', YEARS);
+      this.createLineChart(years, 'yearLineChart');
     });
   }
 
   loadSalaryCity(): void {
     this.salaryService.getSalariesCity().subscribe((city) => {
       this.createChart(city, 'cityChart', CITIES);
+      this.createBarChart(city);
     });
   }
 
@@ -127,6 +129,57 @@ export class DashboardComponent implements OnInit {
                 return ` ${counts} - ${value}% (Moyenne: ${average}€)`;
               },
             },
+          },
+        },
+      },
+    });
+  }
+
+  createBarChart(data: any[]): void {
+    const labels = CITIES.map((item) => item.label); // Formattez les noms pour être plus lisibles
+    const salaries = data.map((item) => item.average); // Salaire moyen
+    const medianSalaries = data.map((item) => item.median); // Salaire médian
+
+    new Chart('barCities', {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Salaire Moyen (€)',
+            data: salaries,
+            borderColor: '#06D6A0',
+            backgroundColor: 'rgba(6, 214, 160, 0.2)',
+            borderWidth: 1,
+          },
+          {
+            label: 'Salaire Médian (€)',
+            data: medianSalaries,
+            borderColor: '#FFD166',
+            backgroundColor: 'rgba(255, 209, 102, 0.2)',
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          tooltip: {
+            callbacks: {
+              label: function (tooltipItem) {
+                const dataset = tooltipItem.dataset;
+                const value = dataset.data[tooltipItem.dataIndex];
+                return `${dataset.label}: ${value}€ `;
+              },
+            },
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
           },
         },
       },
