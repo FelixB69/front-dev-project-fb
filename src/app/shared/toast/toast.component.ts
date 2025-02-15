@@ -18,7 +18,7 @@ import { ToastService } from '../../core/services/toast.service';
           'border-blue bg-blue/10 text-blue': toast.type === 'info'
         }"
       >
-        <!-- Icône dynamique -->
+        <!-- Icone -->
         <span
           class="material-icons mr-3 text-2xl"
           [ngClass]="{
@@ -36,7 +36,7 @@ import { ToastService } from '../../core/services/toast.service';
           {{ toast.message }}
         </span>
 
-        <!-- Bouton de fermeture -->
+        <!-- Closed button -->
         <button
           (click)="toastService.dismissToast(toast.id)"
           class="ml-4 flex items-center justify-center w-6 h-6 rounded-full bg-white/50 hover:bg-white transition"

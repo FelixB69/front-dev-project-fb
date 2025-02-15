@@ -7,7 +7,7 @@ import { catchError, Observable, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class SalaryService {
-  private baseUrl = 'http://localhost:3000/salaries';
+  private baseUrl = 'https://api-felixberger.fr/salaries';
   constructor(private http: HttpClient) {}
 
   fetchData(): Observable<any> {

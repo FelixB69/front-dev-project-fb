@@ -18,18 +18,18 @@ export class ToastService {
   ) {
     const id = new Date().getTime();
     if (this.toasts.length >= 5) {
-      this.toasts.shift(); // Supprimer le toast le plus ancien si nous avons plus de 5 toasts
+      this.toasts.shift(); // Remove former toast if we are displaying more of 5 toasts
     }
     this.toasts.push({ id, message, type });
 
-    // Différer l'affichage du toast dans un cycle d'événement non bloquant
+    // Defer the toast display in a non-blocking event loop
     setTimeout(() => {
       requestAnimationFrame(() => {
         setTimeout(() => {
           this.dismissToast(id);
-        }, 4000); // Durée d'affichage du toast
+        }, 4000);
       });
-    }, 100); // Retarder l'affichage du toast
+    }, 100);
   }
 
   success(message: string) {
