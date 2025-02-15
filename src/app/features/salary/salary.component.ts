@@ -4,7 +4,7 @@ import { Salary, Score } from '../../core/models/salary.model';
 import { SalaryService } from '../../core/services/salary.service';
 import { FormsModule } from '@angular/forms';
 import { RANGES, YEARS } from '../../core/constants/salaryConstants';
-import { ToastService } from '../../core/services/toast.service'; // ✅ Import du toast personnalisé
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-salaire',

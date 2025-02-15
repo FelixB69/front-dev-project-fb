@@ -7,7 +7,7 @@
   </p>
   <div class="flex gap-8">
     <div class="w-1/3 mb-8">
-      <!-- Filtrer par ville -->
+      <!-- Filter by city -->
       <label for="city" class="block mb-3 text-md font-semibold text-gray-dark">
         Filtrer par localisation
       </label>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="w-1/3 mb-8">
-      <!-- Filtrer par tranche de salaire -->
+      <!-- Filter by range -->
       <label
         for="salary-range"
         class="block mb-3 text-md font-semibold text-gray-dark"
@@ -65,7 +65,7 @@
       </div>
     </div>
     <div class="w-1/3 mb-8">
-      <!-- Filtrer par tranche de salaire -->
+      <!-- Filter by experience years -->
       <label
         for="salary-range"
         class="block mb-3 text-md font-semibold text-gray-dark"
@@ -96,7 +96,7 @@
     </div>
   </div>
 
-  <!-- Indicateur de chargement -->
+  <!-- Loading -->
   <div *ngIf="loading" class="flex items-center justify-center p-8">
     <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue"></div>
     <span class="ml-4 text-gray-dark font-sans"
@@ -104,7 +104,7 @@
     >
   </div>
 
-  <!-- Tableau des salaires -->
+  <!-- Salary table -->
   <div
     *ngIf="!loading && salaries.length > 0"
     class="overflow-x-auto rounded-3xl shadow-lg bg-white"
@@ -257,7 +257,7 @@
     </table>
   </div>
 
-  <!-- Message si aucun salaire disponible -->
+  <!-- Message -->
   <div
     *ngIf="!loading && !errorMessage && salaries.length === 0"
     class="bg-orange/20 border-l-4 border-orange p-4 rounded-lg mt-6"

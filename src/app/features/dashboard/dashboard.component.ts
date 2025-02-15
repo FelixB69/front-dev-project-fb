@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart, registerables } from 'chart.js';
 import { SalaryService } from '../../core/services/salary.service';
-import { ToastService } from '../../core/services/toast.service'; // Import du service Toast
+import { ToastService } from '../../core/services/toast.service';
 import { StatsCardComponent } from '../../shared/stats-card/stats-card.component';
 import { Datas, Stats } from '../../core/models/salary.model';
 import { CITIES, RANGES, YEARS } from '../../core/constants/salaryConstants';
@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private salaryService: SalaryService,
-    private toastService: ToastService // Injection du service Toast
+    private toastService: ToastService
   ) {
     Chart.register(...registerables);
   }
