@@ -70,7 +70,7 @@
       </button>
 
       <!-- Titre central -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center">
         <!-- Icône de rafraîchissement -->
         <button
           (click)="refreshData()"
@@ -103,6 +103,7 @@
       [class.ml-64]="menuState === 'in'"
       [class.ml-0]="menuState === 'out'"
     >
+      <app-toast></app-toast>
       <router-outlet></router-outlet>
     </main>
   </div>

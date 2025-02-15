@@ -8,12 +8,13 @@ import {
   animate,
   transition,
 } from '@angular/animations';
-import { SalaryService } from '../services/salary/salary.service';
+import { SalaryService } from '../core/services/salary.service';
+import { ToastComponent } from '../shared/toast/toast.component';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, ToastComponent],
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css'],
   animations: [

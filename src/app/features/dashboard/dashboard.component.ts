@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Chart, registerables } from 'chart.js';
-import { SalaryService } from '../../services/salary/salary.service';
+import { SalaryService } from '../../core/services/salary.service';
+import { ToastService } from '../../core/services/toast.service'; // Import du service Toast
 import { StatsCardComponent } from '../../shared/stats-card/stats-card.component';
-import { Datas, Stats } from '../../models/salary.model';
+import { Datas, Stats } from '../../core/models/salary.model';
 import { CITIES, RANGES, YEARS } from '../../core/constants/salaryConstants';
 
 @Component({
@@ -17,7 +18,10 @@ export class DashboardComponent implements OnInit {
   public chart: any;
   stats: { title: string; value: string | number; valueColor: string }[] = [];
 
-  constructor(private salaryService: SalaryService) {
+  constructor(
+    private salaryService: SalaryService,
+    private toastService: ToastService // Injection du service Toast
+  ) {
     Chart.register(...registerables);
   }
 
@@ -29,55 +33,93 @@ export class DashboardComponent implements OnInit {
   }
 
   loadSalaryRanges(): void {
-    this.salaryService.getSalariesRanges().subscribe((ranges) => {
-      this.createChart(ranges, 'rangeChart', RANGES);
-      this.createLineChart(ranges, 'rangeLineChart');
+    this.salaryService.getSalariesRanges().subscribe({
+      next: (ranges) => {
+        this.createChart(ranges, 'rangeChart', RANGES);
+        this.createLineChart(ranges, 'rangeLineChart');
+      },
+      error: (err) => {
+        this.toastService.error(
+          'Erreur lors du chargement des tranches de salaires'
+        );
+        console.error(
+          'Erreur lors du chargement des tranches de salaires:',
+          err
+        );
+      },
     });
   }
 
   loadSalaryYears(): void {
-    this.salaryService.getSalariesYears().subscribe((years) => {
-      this.createChart(years, 'yearChart', YEARS);
-      this.createLineChart(years, 'yearLineChart');
+    this.salaryService.getSalariesYears().subscribe({
+      next: (years) => {
+        this.createChart(years, 'yearChart', YEARS);
+        this.createLineChart(years, 'yearLineChart');
+      },
+      error: (err) => {
+        this.toastService.error(
+          'Erreur lors du chargement des années de salaires'
+        );
+        console.error('Erreur lors du chargement des années de salaires:', err);
+      },
     });
   }
 
   loadSalaryCity(): void {
-    this.salaryService.getSalariesCity().subscribe((city) => {
-      this.createChart(city, 'cityChart', CITIES);
-      this.createBarChart(city);
+    this.salaryService.getSalariesCity().subscribe({
+      next: (city) => {
+        this.createChart(city, 'cityChart', CITIES);
+        this.createBarChart(city);
+      },
+      error: (err) => {
+        this.toastService.error(
+          'Erreur lors du chargement des données des villes'
+        );
+        console.error('Erreur lors du chargement des données des villes:', err);
+      },
     });
   }
 
   loadSalaryData(): void {
-    this.salaryService.getSalariesDatas().subscribe((data: Datas) => {
-      this.stats = [
-        {
-          title: 'Total des Salaires',
-          value: data.totalSalaries,
-          valueColor: 'text-pink',
-        },
-        {
-          title: 'Salaire Moyen',
-          value: `${data.averageCompensation} €`,
-          valueColor: 'text-green',
-        },
-        {
-          title: 'Salaire Médian',
-          value: `${data.medianCompensation} €`,
-          valueColor: 'text-orange',
-        },
-        {
-          title: 'Salaire Min',
-          value: `${data.lowestSalary} €`,
-          valueColor: 'text-blue',
-        },
-        {
-          title: 'Salaire Max',
-          value: `${data.highestSalary} €`,
-          valueColor: 'text-gray',
-        },
-      ];
+    this.salaryService.getSalariesDatas().subscribe({
+      next: (data: Datas) => {
+        this.stats = [
+          {
+            title: 'Total des Salaires',
+            value: data.totalSalaries,
+            valueColor: 'text-pink',
+          },
+          {
+            title: 'Salaire Moyen',
+            value: `${data.averageCompensation} €`,
+            valueColor: 'text-green',
+          },
+          {
+            title: 'Salaire Médian',
+            value: `${data.medianCompensation} €`,
+            valueColor: 'text-orange',
+          },
+          {
+            title: 'Salaire Min',
+            value: `${data.lowestSalary} €`,
+            valueColor: 'text-blue',
+          },
+          {
+            title: 'Salaire Max',
+            value: `${data.highestSalary} €`,
+            valueColor: 'text-gray',
+          },
+        ];
+      },
+      error: (err) => {
+        this.toastService.error(
+          'Erreur lors du chargement des données des salaires'
+        );
+        console.error(
+          'Erreur lors du chargement des données des salaires:',
+          err
+        );
+      },
     });
   }
 
@@ -136,9 +178,9 @@ export class DashboardComponent implements OnInit {
   }
 
   createBarChart(data: any[]): void {
-    const labels = CITIES.map((item) => item.label); // Formattez les noms pour être plus lisibles
-    const salaries = data.map((item) => item.average); // Salaire moyen
-    const medianSalaries = data.map((item) => item.median); // Salaire médian
+    const labels = CITIES.map((item) => item.label);
+    const salaries = data.map((item) => item.average);
+    const medianSalaries = data.map((item) => item.median);
 
     new Chart('barCities', {
       type: 'bar',
@@ -187,9 +229,9 @@ export class DashboardComponent implements OnInit {
   }
 
   createLineChart(data: any[], chartName: string): void {
-    const labels = data.map((item) => this.formatRangeName(item.name)); // Formattez les noms pour être plus lisibles
-    const averageSalaries = data.map((item) => item.average); // Salaire moyen
-    const medianSalaries = data.map((item) => item.median); // Salaire médian
+    const labels = YEARS.map((item) => item.label);
+    const averageSalaries = data.map((item) => item.average);
+    const medianSalaries = data.map((item) => item.median);
 
     new Chart(chartName, {
       type: 'line',
@@ -201,7 +243,7 @@ export class DashboardComponent implements OnInit {
             data: averageSalaries,
             borderColor: '#06D6A0',
             backgroundColor: 'rgba(6, 214, 160, 0.2)',
-            tension: 0.4, // Ajoute un effet courbe
+            tension: 0.4,
             fill: true,
           },
           {
@@ -245,24 +287,5 @@ export class DashboardComponent implements OnInit {
         },
       },
     });
-  }
-
-  formatRangeName(name: string): string {
-    switch (name) {
-      case 'under30k':
-        return 'Moins de 30k';
-      case 'between30kAnd40k':
-        return '30k - 40k';
-      case 'between40kAnd50k':
-        return '40k - 50k';
-      case 'between50kAnd70k':
-        return '50k - 70k';
-      case 'between70kAnd100k':
-        return '70k - 100k';
-      case 'over100k':
-        return 'Plus de 100k';
-      default:
-        return name;
-    }
   }
 }

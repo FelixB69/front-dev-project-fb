@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Salary, Score } from '../../models/salary.model';
-import { SalaryService } from '../../services/salary/salary.service';
+import { Salary, Score } from '../../core/models/salary.model';
+import { SalaryService } from '../../core/services/salary.service';
 import { FormsModule } from '@angular/forms';
 import { RANGES, YEARS } from '../../core/constants/salaryConstants';
+import { ToastService } from '../../core/services/toast.service'; // ✅ Import du toast personnalisé
 
 @Component({
   selector: 'app-salaire',
@@ -27,9 +28,13 @@ export class SalaryComponent implements OnInit {
   sortKey: string = '';
   sortOrder: 'asc' | 'desc' = 'asc';
 
-  constructor(private salaryService: SalaryService) {}
+  constructor(
+    private salaryService: SalaryService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
+    this.loading = true;
     this.fetchSalaries();
     this.fetchScore();
     this.fetchCities();
@@ -51,23 +56,31 @@ export class SalaryComponent implements OnInit {
           this.loading = false;
         },
         error: (error) => {
-          this.errorMessage = 'Erreur lors de la récupération des salaires.';
+          this.errorMessage = '❌ Erreur lors de la récupération des salaires.';
           this.loading = false;
+          this.toastService.error(this.errorMessage);
           console.error(error);
-        },
-        complete: () => {
-          console.log('Récupération des salaires terminée.');
         },
       });
   }
 
-  fetchCities() {
-    this.salaryService.getCities().subscribe((cities) => {
-      this.cities = cities;
+  fetchCities(): void {
+    this.loading = true;
+    this.salaryService.getCities().subscribe({
+      next: (cities) => {
+        this.cities = cities;
+        this.loading = false;
+      },
+      error: (error) => {
+        this.errorMessage = '❌ Erreur lors de la récupération des villes.';
+        this.loading = false;
+        this.toastService.error(this.errorMessage);
+        console.error(error);
+      },
     });
   }
 
-  fetchScore() {
+  fetchScore(): void {
     this.loading = true;
     this.salaryService.getScore().subscribe({
       next: (data) => {
@@ -75,12 +88,10 @@ export class SalaryComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        this.errorMessage = 'Erreur lors de la récupération des scores.';
+        this.errorMessage = '❌ Erreur lors de la récupération des scores.';
         this.loading = false;
+        this.toastService.error(this.errorMessage);
         console.error(error);
-      },
-      complete: () => {
-        console.log('Récupération des scores terminée.');
       },
     });
   }
@@ -133,16 +144,16 @@ export class SalaryComponent implements OnInit {
 
   clearCityFilter(): void {
     this.selectedCity = '';
-    this.fetchSalaries(); // Relancer la récupération des salaires
+    this.fetchSalaries();
   }
 
   clearRangeFilter(): void {
     this.selectedRangeName = '';
-    this.fetchSalaries(); // Relancer la récupération des salaires
+    this.fetchSalaries();
   }
 
   clearYearFilter(): void {
     this.selectedYear = '';
-    this.fetchSalaries(); // Relancer la récupération des salaires
+    this.fetchSalaries();
   }
 }

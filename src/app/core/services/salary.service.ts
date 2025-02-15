@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Salary, Datas, Stats } from '../../models/salary.model';
+import { Salary, Datas, Stats } from '../models/salary.model';
 import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable({
