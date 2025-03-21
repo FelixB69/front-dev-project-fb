@@ -39,7 +39,7 @@ import { ToastComponent } from '../shared/toast/toast.component';
 export class LayoutComponent {
   menuState: string = 'in';
   currentTitle: string = 'Dashboard';
-  isRefreshing: boolean = false;
+  // isRefreshing: boolean = false;
 
   constructor(private router: Router, private salaryService: SalaryService) {
     this.router.events.subscribe((event) => {
@@ -67,33 +67,33 @@ export class LayoutComponent {
     this.currentTitle = title;
   }
 
-  refreshData(): void {
-    if (this.isRefreshing) {
-      return;
-    }
+  // refreshData(): void {
+  //   if (this.isRefreshing) {
+  //     return;
+  //   }
 
-    this.isRefreshing = true;
-    this.salaryService.fetchData().subscribe({
-      next: () => {
-        console.log('API appelée avec succès');
-        const currentUrl = this.router.url;
+  //   this.isRefreshing = true;
+  //   this.salaryService.fetchData().subscribe({
+  //     next: () => {
+  //       console.log('API appelée avec succès');
+  //       const currentUrl = this.router.url;
 
-        // To create a refresh
-        this.router
-          .navigateByUrl('/', { skipLocationChange: true })
-          .then(() => {
-            this.router
-              .navigateByUrl(currentUrl, { skipLocationChange: true })
-              .then(() => {
-                console.log('Composant rechargé :', currentUrl);
-              });
-          });
-        this.isRefreshing = false;
-      },
-      error: (err) => {
-        console.error("Erreur lors de l'appel de l'API :", err);
-        this.isRefreshing = false;
-      },
-    });
-  }
+  //       // To create a refresh
+  //       this.router
+  //         .navigateByUrl('/', { skipLocationChange: true })
+  //         .then(() => {
+  //           this.router
+  //             .navigateByUrl(currentUrl, { skipLocationChange: true })
+  //             .then(() => {
+  //               console.log('Composant rechargé :', currentUrl);
+  //             });
+  //         });
+  //       this.isRefreshing = false;
+  //     },
+  //     error: (err) => {
+  //       console.error("Erreur lors de l'appel de l'API :", err);
+  //       this.isRefreshing = false;
+  //     },
+  //   });
+  // }
 }
