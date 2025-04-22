@@ -39,9 +39,6 @@ export class DashboardComponent implements OnInit {
         this.createLineChart(ranges, 'rangeLineChart');
       },
       error: (err) => {
-        this.toastService.error(
-          'Erreur lors du chargement des tranches de salaires'
-        );
         console.error(
           'Erreur lors du chargement des tranches de salaires:',
           err
@@ -57,9 +54,6 @@ export class DashboardComponent implements OnInit {
         this.createLineChart(years, 'yearLineChart');
       },
       error: (err) => {
-        this.toastService.error(
-          'Erreur lors du chargement des années de salaires'
-        );
         console.error('Erreur lors du chargement des années de salaires:', err);
       },
     });
@@ -72,9 +66,6 @@ export class DashboardComponent implements OnInit {
         this.createBarChart(city);
       },
       error: (err) => {
-        this.toastService.error(
-          'Erreur lors du chargement des données des villes'
-        );
         console.error('Erreur lors du chargement des données des villes:', err);
       },
     });
@@ -112,9 +103,6 @@ export class DashboardComponent implements OnInit {
         ];
       },
       error: (err) => {
-        this.toastService.error(
-          'Erreur lors du chargement des données des salaires'
-        );
         console.error(
           'Erreur lors du chargement des données des salaires:',
           err

@@ -56,9 +56,7 @@ export class SalaryComponent implements OnInit {
           this.loading = false;
         },
         error: (error) => {
-          this.errorMessage = '❌ Erreur lors de la récupération des salaires.';
           this.loading = false;
-          this.toastService.error(this.errorMessage);
           console.error(error);
         },
       });
@@ -72,9 +70,7 @@ export class SalaryComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        this.errorMessage = '❌ Erreur lors de la récupération des villes.';
         this.loading = false;
-        this.toastService.error(this.errorMessage);
         console.error(error);
       },
     });
@@ -88,9 +84,7 @@ export class SalaryComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        this.errorMessage = '❌ Erreur lors de la récupération des scores.';
         this.loading = false;
-        this.toastService.error(this.errorMessage);
         console.error(error);
       },
     });
@@ -99,16 +93,27 @@ export class SalaryComponent implements OnInit {
   filterByCity(city: string): void {
     this.selectedCity = city;
     this.fetchSalaries();
+    this.toastService.success(`Filtre appliqué : Ville - ${city}`);
   }
 
   filterByRange(rangeName: string): void {
     this.selectedRangeName = rangeName;
     this.fetchSalaries();
+    this.toastService.success(
+      `Filtre appliqué : Tranche - ${
+        this.ranges.find((range) => range.name === rangeName)?.label || ''
+      } `
+    );
   }
 
   filterByYear(year: string): void {
     this.selectedYear = year;
     this.fetchSalaries();
+    this.toastService.success(
+      `Filtre appliqué : Année - ${
+        this.year.find((y) => y.name === year)?.label || ''
+      }`
+    );
   }
 
   sortData(key: string): void {

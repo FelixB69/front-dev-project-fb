@@ -33,6 +33,13 @@ module.exports = {
         "3xl": "1rem",
         "4xl": "2rem",
       },
+      colors: {
+        green: {
+          DEFAULT: "#06D6A0",
+          dark: "#059669", // Pour `border-green-dark`
+          light: "#34D399", // Pour `bg-green-light`
+        },
+      },
     },
   },
   plugins: [],

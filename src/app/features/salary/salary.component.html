@@ -5,8 +5,9 @@
       >salaires.dev</a
     >
   </p>
-  <div class="flex gap-8">
-    <div class="w-1/3 mb-8">
+  <!-- Responsive filter grid -->
+  <div class="grid md:grid-cols-3 gap-4 md:gap-8 mb-8">
+    <div class="mb-4">
       <!-- Filter by city -->
       <label for="city" class="block mb-3 text-md font-semibold text-gray-dark">
         Filtrer par localisation
@@ -34,7 +35,7 @@
       </div>
     </div>
 
-    <div class="w-1/3 mb-8">
+    <div class="mb-4">
       <!-- Filter by range -->
       <label
         for="salary-range"
@@ -64,17 +65,17 @@
         </button>
       </div>
     </div>
-    <div class="w-1/3 mb-8">
+    <div class="mb-4">
       <!-- Filter by experience years -->
       <label
-        for="salary-range"
+        for="experience-years"
         class="block mb-3 text-md font-semibold text-gray-dark"
       >
         Filtrer par nombre d'années totales d'expérience
       </label>
       <div class="relative">
         <select
-          id="salary-range"
+          id="experience-years"
           [(ngModel)]="selectedYear"
           (change)="filterByYear(selectedYear)"
           [ngClass]="{ 'px-8': selectedYear, 'px-4': !selectedYear }"
@@ -104,17 +105,17 @@
     >
   </div>
 
-  <!-- Salary table -->
+  <!-- Desktop table  -->
   <div
     *ngIf="!loading && salaries.length > 0"
-    class="overflow-x-auto rounded-3xl shadow-lg bg-white"
+    class="hidden md:block rounded-3xl shadow-lg bg-white overflow-hidden"
   >
     <table class="divide-y divide-gray w-full">
       <thead class="bg-blue">
         <tr class="font-bold">
           <th
             scope="col"
-            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('company')"
           >
             Entreprise
@@ -124,7 +125,7 @@
           </th>
           <th
             scope="col"
-            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('title')"
           >
             Poste
@@ -134,7 +135,7 @@
           </th>
           <th
             scope="col"
-            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('location')"
           >
             Localisation
@@ -144,7 +145,7 @@
           </th>
           <th
             scope="col"
-            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('compensation')"
           >
             Salaire (€)
@@ -154,7 +155,7 @@
           </th>
           <th
             scope="col"
-            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('date')"
           >
             Date
@@ -164,13 +165,13 @@
           </th>
           <th
             scope="col"
-            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider"
+            class="px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider"
           >
             Niveau
           </th>
           <th
             scope="col"
-            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('company_xp')"
           >
             Exp. entreprise
@@ -180,7 +181,7 @@
           </th>
           <th
             scope="col"
-            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
+            class="px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider cursor-pointer"
             (click)="sortData('total_xp')"
           >
             Exp. totale
@@ -190,13 +191,13 @@
           </th>
           <th
             scope="col"
-            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider"
+            class="px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider"
           >
             Télétravail
           </th>
           <th
             scope="col"
-            class="w-1/10 px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider"
+            class="px-4 py-4 text-left text-xs font-sans font-semibold text-white uppercase tracking-wider"
           >
             Score
           </th>
@@ -255,6 +256,61 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- Mobile card view -->
+  <div *ngIf="!loading && salaries.length > 0" class="md:hidden space-y-4">
+    <div
+      *ngFor="let item of salaries"
+      class="bg-white rounded-xl shadow-md p-4"
+    >
+      <div class="flex justify-between items-start mb-3">
+        <h3 class="text-md font-bold text-gray-dark">{{ item.company }}</h3>
+        <span
+          class="text-blue text-xl font-bold bg-blue/10 px-3 py-1 rounded-lg"
+          >{{ item.compensation }}€</span
+        >
+      </div>
+      <div class="space-y-2 text-sm">
+        <p><span class="font-semibold">Poste:</span> {{ item.title }}</p>
+        <p>
+          <span class="font-semibold">Localisation:</span> {{ item.location }}
+        </p>
+        <p>
+          <span class="font-semibold">Date:</span>
+          {{ item.date | date : "dd/MM/YYYY" }}
+        </p>
+        <p><span class="font-semibold">Niveau:</span> {{ item.level }}</p>
+        <p>
+          <span class="font-semibold">Exp. entreprise:</span>
+          {{ item.company_xp || "N/A" }}
+        </p>
+        <p>
+          <span class="font-semibold">Exp. totale:</span>
+          {{ item.total_xp || "N/A" }}
+        </p>
+        <p>
+          <span class="font-semibold">Score:</span> {{ getScoreById(item.id) }}
+        </p>
+        <p class="mt-2">
+          <span
+            *ngIf="item.remote; else mobileNoRemote"
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green/20 text-green"
+          >
+            {{ item.remote.variant }} ({{ item.remote.dayCount || 0 }} jours/{{
+              item.remote.base
+            }})
+          </span>
+          <ng-template #mobileNoRemote>
+            <span
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray/20 text-gray"
+            >
+              Pas de télétravail
+            </span>
+          </ng-template>
+        </p>
+      </div>
+    </div>
   </div>
 
   <!-- Message -->

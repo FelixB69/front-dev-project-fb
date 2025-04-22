@@ -12,7 +12,8 @@ import { ToastService } from '../../core/services/toast.service';
         *ngFor="let toast of toastService.toasts"
         class="flex items-center max-w-sm px-5 py-4 rounded-3xl shadow-lg border-l-4 toast-animation"
         [ngClass]="{
-          'border-green bg-green/10 text-green': toast.type === 'success',
+          'border-green-dark bg-green-light text-white':
+            toast.type === 'success',
           'border-red bg-red-100 text-red': toast.type === 'error',
           'border-orange bg-orange/20 text-orange': toast.type === 'warning',
           'border-blue bg-blue/10 text-blue': toast.type === 'info'
@@ -22,7 +23,7 @@ import { ToastService } from '../../core/services/toast.service';
         <span
           class="material-icons mr-3 text-2xl"
           [ngClass]="{
-            'text-green': toast.type === 'success',
+            'text-white': toast.type === 'success',
             'text-red': toast.type === 'error',
             'text-orange': toast.type === 'warning',
             'text-blue': toast.type === 'info'
