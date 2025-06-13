@@ -1,4 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Salary, Datas, Stats } from '../models/salary.model';
 import { catchError, Observable, throwError } from 'rxjs';
@@ -21,29 +25,29 @@ export class SalaryService {
   //   );
   // }
 
+  private addCacheBusting(): HttpParams {
+    return new HttpParams().set('_', Date.now().toString());
+  }
+
   getSalaries(): Observable<Salary[]> {
     return this.http
-      .get<any[]>(this.baseUrl)
+      .get<Salary[]>(this.baseUrl, { params: this.addCacheBusting() })
       .pipe(catchError(this.handleError));
   }
 
   getCities(): Observable<string[]> {
     return this.http
-      .get<string[]>(`${this.baseUrl}/cities`)
+      .get<string[]>(`${this.baseUrl}/cities`, {
+        params: this.addCacheBusting(),
+      })
       .pipe(catchError(this.handleError));
   }
 
   getSalariesByCity(city: string): Observable<Salary[]> {
-    const url = `http://localhost:3000/salaries/city/${city}`;
-    console.log('Calling API:', url);
-    return this.http.get<Salary[]>(url).pipe(
-      catchError((error) => {
-        console.error('HTTP Error:', error);
-        return throwError(
-          () => new Error('Erreur lors de la récupération des salaires.')
-        );
-      })
-    );
+    const url = `${this.baseUrl}/city/${city}`;
+    return this.http
+      .get<Salary[]>(url, { params: this.addCacheBusting() })
+      .pipe(catchError(this.handleError));
   }
 
   getSalariesWithFilters(
@@ -51,77 +55,60 @@ export class SalaryService {
     rangeName?: string,
     year?: string
   ): Observable<Salary[]> {
-    let url = `${this.baseUrl}/filter`;
+    let params = this.addCacheBusting();
 
-    const params: { [key: string]: string } = {};
+    if (city) params = params.set('city', city);
+    if (rangeName) params = params.set('rangeName', rangeName);
+    if (year) params = params.set('year', year);
 
-    if (city) {
-      params['city'] = city; // Notation avec crochets
-    }
-
-    if (rangeName) {
-      params['rangeName'] = rangeName; // Notation avec crochets
-    }
-
-    if (year) {
-      params['year'] = year; // Notation avec crochets
-    }
-
-    return this.http.get<Salary[]>(url, { params }).pipe(
-      catchError((error) => {
-        console.error('HTTP Error:', error);
-        return throwError(
-          () =>
-            new Error(
-              'Erreur lors de la récupération des salaires avec filtres.'
-            )
-        );
-      })
-    );
+    return this.http
+      .get<Salary[]>(`${this.baseUrl}/filter`, { params })
+      .pipe(catchError(this.handleError));
   }
 
   getSalariesRanges(): Observable<Stats[]> {
     return this.http
-      .get<any[]>(`${this.baseUrl}/ranges`)
+      .get<Stats[]>(`${this.baseUrl}/ranges`, {
+        params: this.addCacheBusting(),
+      })
       .pipe(catchError(this.handleError));
   }
 
   getSalariesYears(): Observable<Stats[]> {
     return this.http
-      .get<any[]>(`${this.baseUrl}/years`)
+      .get<Stats[]>(`${this.baseUrl}/years`, { params: this.addCacheBusting() })
       .pipe(catchError(this.handleError));
   }
 
   getSalariesCity(): Observable<Stats[]> {
     return this.http
-      .get<any[]>(`${this.baseUrl}/city`)
+      .get<Stats[]>(`${this.baseUrl}/city`, { params: this.addCacheBusting() })
       .pipe(catchError(this.handleError));
   }
 
   getSalariesDatas(): Observable<Datas> {
     return this.http
-      .get<any>(`${this.baseUrl}/datas`)
+      .get<Datas>(`${this.baseUrl}/datas`, { params: this.addCacheBusting() })
       .pipe(catchError(this.handleError));
   }
 
   getScore(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/score`);
+    return this.http.get<any>(`${this.baseUrl}/score`, {
+      params: this.addCacheBusting(),
+    });
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.status === 0) {
-      console.error('Une erreur réseau est survenue:', error.error);
+      console.error('Erreur réseau :', error.error);
     } else {
-      console.error(
-        `Le serveur a renvoyé le code ${error.status}, ` +
-          `corps de la réponse : ${error.error}`
-      );
+      console.error(`Erreur serveur ${error.status} :`, error.error);
     }
 
     return throwError(
       () =>
         new Error(
-          'Impossible de récupérer les données du serveur. Veuillez réessayer plus tard.'
+          'Erreur lors de la récupération des données. Réessayez plus tard.'
         )
     );
   }
